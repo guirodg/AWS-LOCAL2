@@ -1,0 +1,69 @@
+buildscript {
+    ext {
+        springBootVersion = '2.7.0'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.22.2')
+    }
+}
+
+
+plugins {
+    id 'org.springframework.boot' version '2.7.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'com.palantir.docker' version('0.22.2')
+}
+
+group = 'guirodg'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+bootJar {
+    baseName('aws-local-02')
+    version('1.0.0')
+}
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+    name "${project.group}/${bootJar.getBaseName()}"
+    tags("${bootJar.getVersion()}")
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.7.0'
+
+    //	LOMBOK //
+    implementation 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    // SQS //
+    implementation 'com.amazonaws:aws-java-sdk-sqs:1.12.232'
+    implementation 'com.amazonaws:amazon-sqs-java-messaging-lib:1.0.8'
+    // JSM
+    implementation 'org.springframework:spring-jms:5.3.20'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
