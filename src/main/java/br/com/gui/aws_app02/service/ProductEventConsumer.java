@@ -22,7 +22,7 @@ public class ProductEventConsumer {
     this.objectMapper = objectMapper;
   }
 
-  @JmsListener(destination = "@{aws.sns.queue.product.events.name}")
+  @JmsListener(destination = "${aws.sns.queue.product.events.name}")
   public void receiveProductEvent(TextMessage textMessage) throws JMSException, IOException {
 
     final var snsMessage = objectMapper.readValue(textMessage.getText(), SnsMessage.class);
