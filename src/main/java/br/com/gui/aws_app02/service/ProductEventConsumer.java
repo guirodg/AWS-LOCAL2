@@ -7,6 +7,7 @@ import br.com.gui.aws_app02.model.SnsMessage;
 import br.com.gui.aws_app02.repository.ProductEventLogRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class ProductEventConsumer {
 
   private final ObjectMapper objectMapper;
 
+  @Autowired
   private final ProductEventLogRepository productEventLogRepository;
 
   public ProductEventConsumer(ObjectMapper objectMapper, ProductEventLogRepository productEventLogRepository) {
