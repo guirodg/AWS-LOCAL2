@@ -17,7 +17,7 @@ public class ProductEventLog {
   @Getter
   @Setter
   @DynamoDBTypeConvertedEnum
-  @DynamoDBAttribute(attributeName = "productId")
+  @DynamoDBAttribute(attributeName = "eventType")
   private EventType eventType;
 
   @Getter

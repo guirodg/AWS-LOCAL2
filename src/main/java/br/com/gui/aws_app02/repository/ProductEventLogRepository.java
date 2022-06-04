@@ -10,7 +10,7 @@ import java.util.List;
 @EnableScan
 public interface ProductEventLogRepository extends CrudRepository<ProductEventLog, ProductEventKey> {
 
-  List<ProductEventLog> findAllPk(String code);
+  List<ProductEventLog> findAllByPk(String code);
 
   List<ProductEventLog> findAllByPkAndSkStartsWith(String code, String eventType);
 }
