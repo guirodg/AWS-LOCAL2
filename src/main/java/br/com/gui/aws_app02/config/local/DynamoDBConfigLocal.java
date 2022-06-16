@@ -32,7 +32,7 @@ public class DynamoDBConfigLocal {
     amazonDynamoDB = AmazonDynamoDBClient.builder()
         .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
             "http://localhost:4566",
-            Regions.SA_EAST_1.getName()))
+            Regions.US_EAST_1.getName()))
         .withCredentials(new DefaultAWSCredentialsProviderChain()).build();
 
     final var dynamoDB = new DynamoDB(amazonDynamoDB);
